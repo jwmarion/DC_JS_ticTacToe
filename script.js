@@ -6,7 +6,6 @@ $(document).ready(function () {
     var re = false;
 
     $('.reset').hide();
-
   function entry(a, input){
     if (a == $('.board div:nth-child(1)').attr('class')){
       grid[0][0] = input;
@@ -38,8 +37,6 @@ $(document).ready(function () {
     winCondition();
   }
 function cWrite(inp){
-  console.log(inp[0]);
-  console.log(inp[1]);
   var a = inp[0];
   var b = inp[1];
 
@@ -142,28 +139,28 @@ function cTurn(){
     for (var x = 0; x<3;x++){
       if(grid[x][0] == grid[x][1] && grid[x][1] == grid[x][2] && grid[x][0] !== 0){
         // reset((grid[x][0]);
-      reset((grid[x][0]));
+      resetBoard((grid[x][0]));
       }
       if(grid[0][x] == grid[1][x] && grid[1][x] == grid[2][x] && grid[0][x] !== 0){
         // console.log((grid[0][x] + " wins!"));
-        reset((grid[0][x]));
+        resetBoard((grid[0][x]));
       }
     }
 
     if (grid[0][0] == grid[1][1] && grid[0][0] == grid[2][2] && grid[0][0] !== 0){
       // console.log(grid[0][0] + " wins!");
-      reset((grid[0][0]));
+      resetBoard((grid[0][0]));
     }
     else if (grid[0][2] == grid[1][1] && grid[0][2] == grid[2][0] && grid[0][2] !== 0){
       // console.log(grid[0][2] + " wins!");
-      reset((grid[0][2]));
+      resetBoard((grid[0][2]));
     }
     else if(count==9){
-      reset(0);
+      resetBoard(0);
     }
   }
 
-  function reset(winner){
+  function resetBoard(winner){
     win = true;
     $('.reset').show();
     if (winner == 1){
@@ -175,7 +172,6 @@ function cTurn(){
     else if (winner === 0){
       $('h1').text('Draw!');
     }
-    setWinner();
 
   }
   function setWinner(){
@@ -183,44 +179,36 @@ function cTurn(){
     grid = [[0,0,0],[0,0,0],[0,0,0]];
   }
 
-  $('.reset').click(function(e){
+  $('.board').on('click','.reset',(function(e){
         e = 0;
         $('.square').css('background-image', 'none');
-        //toggle = true;
-        $('.reset').hide();
         $('h1').text("Browser Tic-Tac-Toe!");
         count = 0;
-        grid = [[0,0,0],[0,0,0],[0,0,0]];
         re = true;
-        setTimeout(setWinner(), 500);
-  });
+        win = false;
+        $('.reset').hide();
+        grid = [[0,0,0],[0,0,0],[0,0,0]];
+  }));
 
   $('.board').on('click','.square', function(){
-    if(win === false){
-      if($(this).css('background-image') === 'none'){
-        $(this).css('background-image','url(./media/ie.png');
-        count++;
-        entry($(this).attr('class'), 1);
-        winCondition();
-
+    if($('.reset').is(":visible") === false){
+      if(win === false){
+        if($(this).css('background-image') === 'none'){
+          $(this).css('background-image','url(./media/ie.png');
+          count++;
+          entry($(this).attr('class'), 1);
+          winCondition();
+        }
       }
-      else if(toggle === false && $(this).css('background-image') === 'none'){
-        $(this).css('background-image','url(./media/opera.png');
-        toggle = true;
-        count++;
-        entry($(this).attr('class'),-1);
-        winCondition();
-      }
-    }
-    if(win === false && count < 9){
-      cWrite(cTurn());
-      if (re === true){
-        win = false;
-        re = false;
+      if(win === false && count < 9){
+        cWrite(cTurn());
+        if (re === true){
+          win = false;
+          re = false;
+        }
         winCondition();
       }
     }
-    winCondition();
   });
 
 

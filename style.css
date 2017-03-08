@@ -21,7 +21,7 @@ body{
 }
 .reset{
   background-image: url('./media/chrome.png');
-  border: none;
+  float: left;
   height: 200px;
   width: 200px;
   background-size: contain;
